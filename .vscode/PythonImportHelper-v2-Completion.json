@@ -1,0 +1,190 @@
+[
+    {
+        "label": "csv,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "csv.",
+        "description": "csv.",
+        "detail": "csv.",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "seasonsURL",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonsURL = \"https://j-archive.com/listseasons.php\"\nseasonsResponse = requests.get(seasonsURL)\nseasonsSoup = BeautifulSoup(seasonsResponse.content, \"html.parser\")\nseasonsTable = seasonsSoup.find('table')\n# Variables To Write The SeasonsInfo.csv\nseasonName = ''\nseasonDate = ''\nseasonGames = ''\nseasonsInfo = []\n# Variables To Traverse To A Particular Season",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonsResponse",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonsResponse = requests.get(seasonsURL)\nseasonsSoup = BeautifulSoup(seasonsResponse.content, \"html.parser\")\nseasonsTable = seasonsSoup.find('table')\n# Variables To Write The SeasonsInfo.csv\nseasonName = ''\nseasonDate = ''\nseasonGames = ''\nseasonsInfo = []\n# Variables To Traverse To A Particular Season\ncollectLinksToSeason = ''",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonsSoup",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonsSoup = BeautifulSoup(seasonsResponse.content, \"html.parser\")\nseasonsTable = seasonsSoup.find('table')\n# Variables To Write The SeasonsInfo.csv\nseasonName = ''\nseasonDate = ''\nseasonGames = ''\nseasonsInfo = []\n# Variables To Traverse To A Particular Season\ncollectLinksToSeason = ''\nseasonsLinks = []",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonsTable",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonsTable = seasonsSoup.find('table')\n# Variables To Write The SeasonsInfo.csv\nseasonName = ''\nseasonDate = ''\nseasonGames = ''\nseasonsInfo = []\n# Variables To Traverse To A Particular Season\ncollectLinksToSeason = ''\nseasonsLinks = []\n# For Every Row (Season) In The seasonsTable, Grab Relevant Info",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonName",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonName = ''\nseasonDate = ''\nseasonGames = ''\nseasonsInfo = []\n# Variables To Traverse To A Particular Season\ncollectLinksToSeason = ''\nseasonsLinks = []\n# For Every Row (Season) In The seasonsTable, Grab Relevant Info\nfor row in seasonsTable.find_all('tr'):\n    # Collect Info On A Season",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonDate",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonDate = ''\nseasonGames = ''\nseasonsInfo = []\n# Variables To Traverse To A Particular Season\ncollectLinksToSeason = ''\nseasonsLinks = []\n# For Every Row (Season) In The seasonsTable, Grab Relevant Info\nfor row in seasonsTable.find_all('tr'):\n    # Collect Info On A Season\n    seasonName = row.find('a').text.strip()",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonGames",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonGames = ''\nseasonsInfo = []\n# Variables To Traverse To A Particular Season\ncollectLinksToSeason = ''\nseasonsLinks = []\n# For Every Row (Season) In The seasonsTable, Grab Relevant Info\nfor row in seasonsTable.find_all('tr'):\n    # Collect Info On A Season\n    seasonName = row.find('a').text.strip()\n    seasonDate = row.find_all('td')[1].text.strip()",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonsInfo",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonsInfo = []\n# Variables To Traverse To A Particular Season\ncollectLinksToSeason = ''\nseasonsLinks = []\n# For Every Row (Season) In The seasonsTable, Grab Relevant Info\nfor row in seasonsTable.find_all('tr'):\n    # Collect Info On A Season\n    seasonName = row.find('a').text.strip()\n    seasonDate = row.find_all('td')[1].text.strip()\n    seasonGames = row.find_all('td')[2].text.strip()",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "collectLinksToSeason",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "collectLinksToSeason = ''\nseasonsLinks = []\n# For Every Row (Season) In The seasonsTable, Grab Relevant Info\nfor row in seasonsTable.find_all('tr'):\n    # Collect Info On A Season\n    seasonName = row.find('a').text.strip()\n    seasonDate = row.find_all('td')[1].text.strip()\n    seasonGames = row.find_all('td')[2].text.strip()\n    # Store the Info to one Row\n    seasonsInfo = [seasonName, seasonDate, seasonGames]",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonsLinks",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonsLinks = []\n# For Every Row (Season) In The seasonsTable, Grab Relevant Info\nfor row in seasonsTable.find_all('tr'):\n    # Collect Info On A Season\n    seasonName = row.find('a').text.strip()\n    seasonDate = row.find_all('td')[1].text.strip()\n    seasonGames = row.find_all('td')[2].text.strip()\n    # Store the Info to one Row\n    seasonsInfo = [seasonName, seasonDate, seasonGames]\n    # Collect Links To Travel To",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonURL",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonURL = ''\nseasonResponse = ''\nseasonSoup = ''\n# Variables to Grab Each Episode ID In A Particular Season\ncollectLinksToGames = ''\nseasonalGameLinks = []\ngameLinks = []\n# Traverse A Season At A Time\nfor season in seasonsLinks:\n    # A Starting Place To Gather Info On A Season",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonResponse",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonResponse = ''\nseasonSoup = ''\n# Variables to Grab Each Episode ID In A Particular Season\ncollectLinksToGames = ''\nseasonalGameLinks = []\ngameLinks = []\n# Traverse A Season At A Time\nfor season in seasonsLinks:\n    # A Starting Place To Gather Info On A Season\n    seasonUrl = f\"https://j-archive.com/{season}\"",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonSoup",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonSoup = ''\n# Variables to Grab Each Episode ID In A Particular Season\ncollectLinksToGames = ''\nseasonalGameLinks = []\ngameLinks = []\n# Traverse A Season At A Time\nfor season in seasonsLinks:\n    # A Starting Place To Gather Info On A Season\n    seasonUrl = f\"https://j-archive.com/{season}\"\n    seasonResponse = requests.get(seasonUrl)",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "collectLinksToGames",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "collectLinksToGames = ''\nseasonalGameLinks = []\ngameLinks = []\n# Traverse A Season At A Time\nfor season in seasonsLinks:\n    # A Starting Place To Gather Info On A Season\n    seasonUrl = f\"https://j-archive.com/{season}\"\n    seasonResponse = requests.get(seasonUrl)\n    seasonSoup = BeautifulSoup(seasonResponse.content, \"html.parser\")\n    # Collect Links To Travel To",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "seasonalGameLinks",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "seasonalGameLinks = []\ngameLinks = []\n# Traverse A Season At A Time\nfor season in seasonsLinks:\n    # A Starting Place To Gather Info On A Season\n    seasonUrl = f\"https://j-archive.com/{season}\"\n    seasonResponse = requests.get(seasonUrl)\n    seasonSoup = BeautifulSoup(seasonResponse.content, \"html.parser\")\n    # Collect Links To Travel To\n    collectLinksToGames = seasonSoup.find_all(\"a\", href=lambda href: href and \"showgame.php?game_id=\" in href)",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "gameLinks",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "gameLinks = []\n# Traverse A Season At A Time\nfor season in seasonsLinks:\n    # A Starting Place To Gather Info On A Season\n    seasonUrl = f\"https://j-archive.com/{season}\"\n    seasonResponse = requests.get(seasonUrl)\n    seasonSoup = BeautifulSoup(seasonResponse.content, \"html.parser\")\n    # Collect Links To Travel To\n    collectLinksToGames = seasonSoup.find_all(\"a\", href=lambda href: href and \"showgame.php?game_id=\" in href)\n    seasonalGameLinks = [link[\"href\"].split(\"=\")[1] for link in collectLinksToGames]",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "gameURL",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "gameURL = ''\ngameResponse = ''\ngameSoup = ''\nfor game in gameLinks:\n    gameURL = f\"https://j-archive.com/showgame.php?game_id={game}\"\n    gameResponse = requests.get(gameURL)\n    gameSoup = BeautifulSoup(gameResponse.content, \"html.parser\")\n    # Variables To Write The Game's Info Into A CSV File\n    jCategories = []\n    djCategories = []",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "gameResponse",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "gameResponse = ''\ngameSoup = ''\nfor game in gameLinks:\n    gameURL = f\"https://j-archive.com/showgame.php?game_id={game}\"\n    gameResponse = requests.get(gameURL)\n    gameSoup = BeautifulSoup(gameResponse.content, \"html.parser\")\n    # Variables To Write The Game's Info Into A CSV File\n    jCategories = []\n    djCategories = []\n    fjCategory = []",
+        "detail": "Jeopardy",
+        "documentation": {}
+    },
+    {
+        "label": "gameSoup",
+        "kind": 5,
+        "importPath": "Jeopardy",
+        "description": "Jeopardy",
+        "peekOfCode": "gameSoup = ''\nfor game in gameLinks:\n    gameURL = f\"https://j-archive.com/showgame.php?game_id={game}\"\n    gameResponse = requests.get(gameURL)\n    gameSoup = BeautifulSoup(gameResponse.content, \"html.parser\")\n    # Variables To Write The Game's Info Into A CSV File\n    jCategories = []\n    djCategories = []\n    fjCategory = []\n    gameClues = []",
+        "detail": "Jeopardy",
+        "documentation": {}
+    }
+]
