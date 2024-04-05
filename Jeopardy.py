@@ -1,7 +1,13 @@
 # Libraries Used
 import csv, requests
 from bs4 import BeautifulSoup
+import firebase_admin
+from firebase_admin import credentials, firestore
 
+# Database Connections
+cred = credentials.Certificate('jeopardytraining-firebase-adminsdk-yswlk-16dacfaabf.json')
+firebase_admin.initialize_app(cred)
+theDB = firestore.client()
 
 # A Starting Place To Gather Information
 seasonsURL = "https://j-archive.com/listseasons.php"
@@ -19,6 +25,43 @@ seasonsInfo = []
 collectLinksToSeason = ''
 seasonsLinks = []
 
+
+def addSeason(seasonName, seasonDate, seasonGames):
+    seasonCollection = db.collection('seasons')
+    seasonsDocument = seasonCollection.document(seasonName)
+    seasonsDocument.set({
+        'date': seasonDate,
+        'games': seasonGames
+    })
+    return seasonsDocument
+
+
+def addEpisodeToSeason(seasonDocument, episodeNumber, episodeDate):
+    episodeCollection = seasonDocument.collection('episodes')
+    episodeDocument = episodeCollection.document(episodeNumber)
+    episodeDocument.set({
+        'date': episodeDate
+    })
+    return episodeDocument
+
+
+def addCategoryToEpisdoe(episodeDocument, categoryName):
+    categoryCollection = episodeDocument.collection('categories')
+    categoryDocument = categoryCollection.document(categoryName)
+    categoryDocument.set({})
+    return categoryDocument
+
+
+def addQuestionToCategory(categoryDocument, clue, answer, value):
+    questionsCollection = categoryDocument.collection('questions')
+    questionDocument = questionsCollection.document()
+    questionDocument.set({
+        'clue': clue,
+        'answer': answer,
+        'value': value
+    })
+
+
 # For Every Row (Season) In The seasonsTable, Grab Relevant Info
 for row in seasonsTable.find_all('tr'):
     # Collect Info On A Season
@@ -27,9 +70,10 @@ for row in seasonsTable.find_all('tr'):
     seasonGames = row.find_all('td')[2].text.strip()
     # Store the Info to one Row
     seasonsInfo = [seasonName, seasonDate, seasonGames]
-   
+
     # Collect Links To Travel To
-    collectLinksToSeason = seasonsSoup.find_all('a', href=lambda href: href and href.startswith('showseason.php?season='))
+    collectLinksToSeason = seasonsSoup.find_all('a',
+                                                href=lambda href: href and href.startswith('showseason.php?season='))
     seasonsLinks = [link['href'] for link in collectLinksToSeason]
 
 # Variables To Set Up The Scrape Of A Particual Season
@@ -48,7 +92,7 @@ for season in seasonsLinks:
     seasonUrl = f"https://j-archive.com/{season}"
     seasonResponse = requests.get(seasonUrl)
     seasonSoup = BeautifulSoup(seasonResponse.content, "html.parser")
-    
+
     # Collect Links To Travel To
     collectLinksToGames = seasonSoup.find_all("a", href=lambda href: href and "showgame.php?game_id=" in href)
     seasonalGameLinks = [link["href"].split("=")[1] for link in collectLinksToGames]
@@ -132,7 +176,6 @@ for game in gameLinks:
     for value in djClueLocations:
         theCategories.append(djCategories[value - 1])
     theCategories.append(fjCategoryE)
-
 
     # Correct Clues For A Whole Game In An Array
     gameClues = [element.get_text() for element in gameSoup.find_all(class_='clue_text')]
