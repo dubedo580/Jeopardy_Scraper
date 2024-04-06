@@ -13,7 +13,7 @@ seasonsInfo = []
 
 def collectSeasonInfo(seasonSoup):
     seasonInfo = []
-    seasonsLinks = []
+    seasonsLinks = {}
 
     for row in seasonSoup.find_all('tr'):
         # Collect Info On A Season
@@ -24,12 +24,12 @@ def collectSeasonInfo(seasonSoup):
         seasonsInfo.append((seasonName, seasonDate, seasonGames))
 
         # Collect Links To Travel To
-        collectLinksToSeason = seasonSoup.find_all('a',
-                                                   href=lambda href: href and href.startswith(
-                                                       'showseason.php?season='))
-        seasonsLinks.extend([link['href'] for link in collectLinksToSeason])
+        # Collect Links To Travel To
+        seasonLink = row.find('a', href=lambda href: href and href.startswith('showseason.php?season='))
+        if seasonLink:
+            seasonsLinks[seasonName] = seasonLink['href']
 
-    return seasonsInfo, list(set(seasonsLinks))
+    return seasonsInfo, seasonsLinks
 
 
 def addSeason(seasonName, seasonDate, seasonGames):
@@ -45,8 +45,30 @@ def addEpisodeToSeason(seasonDocument, episodeNumber, episodeDate):
     episodeCollection = seasonDocument.collection('episodes')
     episodeDocument = episodeCollection.document(episodeNumber)
     episodeDocument.set({
-        'date': episodeDate
+        'date': episodeDate,
     })
+
+
+def collectEpisodeInfo(seasonSoup):
+    episodeInfo = []
+    episodeRows = seasonSoup.find_all('tr')
+
+    for row in episodeRows:
+        episodeDetails = {}
+        episodeLink = row.find('a')
+        if episodeLink and 'game_id' in episodeLink['href']:
+            gameID = episodeLink['href'].split('game_id=')[-1]
+            airedText = episodeLink.text  # e.g., "#9075, aired 2024-04-05"
+            gameNumber = airedText.split(',')[0].strip('#')  # Extracts "9075" from "#9075, aired 2024-04-05"
+            airDate = airedText.split('aired ')[-1].strip()  # Extracts "2024-04-05"
+
+            episodeDetails['game_id'] = gameID
+            episodeDetails['game_number'] = gameNumber
+            episodeDetails['air_date'] = airDate
+
+            episodeInfo.append(episodeDetails)
+
+    return episodeInfo
 
 
 def addCategoryToEpisode(episodeDocument, categoryName):
@@ -76,7 +98,18 @@ def main():
 
     # Store the Seasons to the DB
     for seasonName, seasonDate, seasonGames in seasonsInfo:
-        addSeason(seasonName, seasonDate, seasonGames)
+        seasonReference = addSeason(seasonName, seasonDate, seasonGames)
+
+        seasonURL = "https://j-archive.com/" + seasonsLinks[seasonName]
+        seasonResponse = requests.get(seasonURL)
+        seasonSoup = BeautifulSoup(seasonResponse.content, "html.parser")
+        episodeInfo = collectEpisodeInfo(seasonSoup)
+
+        for episode in episodeInfo:
+            gameNumber = episode['game_number']
+            episodeDate = episode['air_date']
+
+            addEpisodeToSeason(theDB.collection('seasons').document(seasonName), gameNumber, episodeDate)
 
 
 if __name__ == '__main__':
